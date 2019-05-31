@@ -2,7 +2,7 @@
 
 import unittest
 from acme import Product
-from acme_report import generate_products, ADJECTIVES, NOUNS
+from acme_report import generate_products, ADJECTIVES, NOUNS, inventory_report
 
 
 class AcmeProductTests(unittest.TestCase):
@@ -40,7 +40,24 @@ class AcmeReportTests(unittest.TestCase):
         self.assertEqual(set(product_names), set(legal_names))
 
     def test_inventory_report(self):
-        pass
+        """Test that checks printed report is in the correct format"""
+        #this test rquires another import
+        import sys, io
+
+        #this redirects sys.stoudt to a buffer
+        stdout = sys.stdout
+        sys.stdout = io.StringIO()
+
+        #initializie products to report
+        products = generate_products()
+        inventory_report(products)
+
+        #get output and restore sys.stdout
+        output = sys.stdout.getvalue()
+        sys.stdout = stdout
+
+        print('\n', output)
+        
 
 if __name__ == '__main__':
     unittest.main()
